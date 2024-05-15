@@ -1,11 +1,24 @@
-import { Button, Image } from "@nextui-org/react";
+import { Button, Chip, Image } from "@nextui-org/react";
 import FileImageOutlined from "@ant-design/icons/FileImageOutlined";
 import CheckOutlined from "@ant-design/icons/CheckOutlined";
 import RedoOutlined from "@ant-design/icons/RedoOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 function App() {
+  const serverURL = "http://127.0.0.1:8000/";
+  useEffect(() => {
+    fetch(serverURL + "test")
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        setIsOnline(true);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
   const [isPhotoSelected, setIsPhotoSelected] = useState(false);
   const [photo, setPhoto] = useState<string | ArrayBuffer | null>("");
+  const [isOnline, setIsOnline] = useState(false);
 
   function triggerInput(): void {
     document.getElementById("image_picker")?.click();
@@ -14,7 +27,7 @@ function App() {
   switch (isPhotoSelected) {
     case false:
       return (
-        <div className="h-screen flex m-auto text-center items-center">
+        <div className="h-screen  flex m-auto justify-evenly text-center items-center flex-col">
           <div>
             <p className="p-4 text-gray-400">
               Simply pick a photo from your gallery or click a picture to know
@@ -44,6 +57,10 @@ function App() {
               }}
             />
           </div>
+          <p>
+            ML server is {isOnline && <Chip color="success">online</Chip>}
+            {!isOnline && <Chip color="danger">offline</Chip>}
+          </p>
         </div>
       );
       break;
