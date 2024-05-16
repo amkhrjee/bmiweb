@@ -41,7 +41,7 @@ function App() {
               startContent={<FileImageOutlined />}
               color="primary"
               variant="shadow"
-              // isDisabled={!isOnline}
+              isDisabled={!isOnline}
               onPress={() => triggerInput()}
             >
               Click a photo or choose from gallery
