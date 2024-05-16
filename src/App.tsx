@@ -1,4 +1,4 @@
-import { Button, Chip, Image } from "@nextui-org/react";
+import { Button, Chip, Image, Spinner } from "@nextui-org/react";
 import FileImageOutlined from "@ant-design/icons/FileImageOutlined";
 import CheckOutlined from "@ant-design/icons/CheckOutlined";
 import RedoOutlined from "@ant-design/icons/RedoOutlined";
@@ -6,7 +6,7 @@ import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 
 import { useEffect, useState } from "react";
 function App() {
-  const serverURL = "http://127.0.0.1:8000/";
+  const serverURL = process.env.API_ENDPOINT;
   useEffect(() => {
     fetch(serverURL + "test")
       .then((resp) => resp.json())
@@ -41,7 +41,7 @@ function App() {
               startContent={<FileImageOutlined />}
               color="primary"
               variant="shadow"
-              isDisabled={!isOnline}
+              // isDisabled={!isOnline}
               onPress={() => triggerInput()}
             >
               Click a photo or choose from gallery
@@ -75,10 +75,16 @@ function App() {
               }}
             />
           </div>
-          <p>
-            ML server is {isOnline && <Chip color="success">online</Chip>}
-            {!isOnline && <Chip color="danger">offline</Chip>}
-          </p>
+          <div className="flex flex-col gap-4">
+            <p>
+              ML server is {isOnline && <Chip color="success">online</Chip>}
+              {!isOnline && <Chip color="danger">offline</Chip>}
+            </p>
+            <p className="text-gray-400 p-4">
+              The ML model is hosted on 2 GB memory on a 2 core CPU at an AWS
+              datacenter in Mumbai.<br></br> So yeah, it's slow.
+            </p>
+          </div>
         </div>
       );
       break;
@@ -117,7 +123,16 @@ function App() {
             {showBMI && (
               <>
                 <div>
-                  BMI is <Chip>{bmi ? bmi : "Loading"}</Chip>
+                  {bmi ? (
+                    <>
+                      BMI is <Chip>{bmi}</Chip>
+                    </>
+                  ) : (
+                    <div className="flex gap-4">
+                      <Spinner size="sm" />
+                      <p>Loading</p>
+                    </div>
+                  )}
                 </div>
                 <Button
                   onPress={() => {
