@@ -8,7 +8,11 @@ import { useEffect, useState } from "react";
 function App() {
   const serverURL = process.env.API_ENDPOINT;
   useEffect(() => {
-    fetch(serverURL + "test")
+    fetch(serverURL + "test", {
+      headers: {
+        Authorization: `Basic ${process.env.USERNAME}:${process.env.PASSWORD}`,
+      },
+    })
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
@@ -59,6 +63,9 @@ function App() {
                 fetch(serverURL + "upload", {
                   method: "POST",
                   body: formData,
+                  headers: {
+                    Authorization: `Basic ${process.env.USERNAME}:${process.env.PASSWORD}`,
+                  },
                 })
                   .then((result) => result.json())
                   .then((data) => {
