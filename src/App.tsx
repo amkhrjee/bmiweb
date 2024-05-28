@@ -23,6 +23,7 @@ function App() {
   const [isOnline, setIsOnline] = useState(false);
   const [showBMI, setShowBMI] = useState(false);
   const [bmi, setBmi] = useState(null);
+  const [attribute, setAttribute] = useState("");
 
   function triggerInput(): void {
     document.getElementById("image_picker")?.click();
@@ -64,6 +65,13 @@ function App() {
                   .then((data) => {
                     console.log(data);
                     setBmi(data.bmi);
+                    if (data.bmi < 20) {
+                      setAttribute("Underweight");
+                    } else if (data.bmi >= 20 && data.bmi < 28) {
+                      setAttribute("Normal weight");
+                    } else {
+                      setAttribute("Overweight");
+                    }
                   });
 
                 setIsPhotoSelected(true);
@@ -123,9 +131,15 @@ function App() {
               <>
                 <div>
                   {bmi ? (
-                    <>
-                      BMI is <Chip>{bmi}</Chip>
-                    </>
+                    <div className="text-center">
+                      <p>
+                        BMI is <Chip>{bmi}</Chip>
+                      </p>
+                      <br />
+                      <p>
+                        <Chip color="warning">{attribute}</Chip>
+                      </p>
+                    </div>
                   ) : (
                     <div className="flex gap-4">
                       <Spinner size="sm" />
