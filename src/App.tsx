@@ -8,11 +8,7 @@ import { useEffect, useState } from "react";
 function App() {
   const serverURL = process.env.API_ENDPOINT;
   useEffect(() => {
-    fetch(serverURL + "test", {
-      headers: {
-        Authorization: `Basic ${process.env.USERNAME}:${process.env.PASSWORD}`,
-      },
-    })
+    fetch(serverURL + "test")
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
@@ -63,9 +59,6 @@ function App() {
                 fetch(serverURL + "upload", {
                   method: "POST",
                   body: formData,
-                  headers: {
-                    Authorization: `Basic ${process.env.USERNAME}:${process.env.PASSWORD}`,
-                  },
                 })
                   .then((result) => result.json())
                   .then((data) => {
@@ -94,7 +87,6 @@ function App() {
           </div>
         </div>
       );
-      break;
     case true:
       return (
         <div className="h-screen flex mx-auto items-center justify-center">
